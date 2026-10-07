@@ -1,0 +1,6 @@
+{
+  "name": "SG HDB First-Home Match & CPF Finder",
+  "description": "Smart HDB home matching for Singapore first-time buyers based on work commute, CPF grant & loan budget, real-time Data.gov.sg resale prices, and nearby amenities.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
