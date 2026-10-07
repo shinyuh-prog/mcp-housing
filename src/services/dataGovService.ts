@@ -65,6 +65,24 @@ export async function fetchRecentTownTransactions(
     return { records: cached.records, total: cached.records.length, isLive: true };
   }
 
+  try {
+    const housingParams = new URLSearchParams({ town: townName.toUpperCase(), limit: String(limit) });
+    if (flatType) housingParams.set('flat_type', flatType.toUpperCase());
+    const response = await fetch(`/api/housing?${housingParams.toString()}`, {
+      headers: { Accept: 'application/json' },
+    });
+    if (response.ok) {
+      const data = await response.json();
+      if (data?.success && Array.isArray(data.records)) {
+        const records = data.records as DataGovRecord[];
+        recordsCache[cacheKey] = { records, timestamp: Date.now() };
+        return { records, total: data.total || records.length, isLive: true };
+      }
+    }
+  } catch {
+    // fall back to direct Data.gov.sg calls below
+  }
+
   const filtersObj: Record<string, string> = {
     town: townName.toUpperCase(),
   };
