@@ -13,6 +13,27 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 export async function fetchDataGovMetadata(): Promise<DataGovMetadata> {
   if (cachedMetadata) return cachedMetadata;
 
+  try {
+    const response = await fetch('/api/housing-metadata', { headers: { Accept: 'application/json' } });
+    if (response.ok) {
+      const body = await response.json();
+      if (body?.success && body.metadata) {
+        const m = body.metadata;
+        cachedMetadata = {
+          datasetId: m.datasetId,
+          name: m.name,
+          lastUpdatedAt: m.lastUpdatedAt,
+          datasetSize: m.datasetSize,
+          coverageStart: m.coverageStart,
+          coverageEnd: m.coverageEnd,
+        };
+        return cachedMetadata;
+      }
+    }
+  } catch {
+    // fall through to direct endpoints
+  }
+
   const endpoints = [
     `/api/datagov-meta/v2/public/api/datasets/${RESOURCE_ID}/metadata`,
     `https://api-production.data.gov.sg/v2/public/api/datasets/${RESOURCE_ID}/metadata`,

@@ -23,7 +23,7 @@ function parseIntParam(value, fallback, min, max) {
  *   town       e.g. "PUNGGOL"
  *   flat_type  e.g. "4 ROOM"
  *   month      e.g. "2026-09"
- *   limit      1-100 (default 20)
+ *   limit      1-100 (default 5)
  *   offset     >= 0 (default 0)
  */
 export async function GET(request) {
@@ -32,7 +32,7 @@ export async function GET(request) {
   const town = params.get('town')?.trim().toUpperCase() || null;
   const flatType = params.get('flat_type')?.trim().toUpperCase() || null;
   const month = params.get('month')?.trim() || null;
-  const limit = parseIntParam(params.get('limit'), 20, 1, MAX_LIMIT);
+  const limit = parseIntParam(params.get('limit'), 5, 1, MAX_LIMIT);
   const offset = parseIntParam(params.get('offset'), 0, 0, 1_000_000);
 
   const errors = [];

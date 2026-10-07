@@ -49,6 +49,7 @@ export async function GET() {
       endpoints: [
         { method: 'GET', path: '/api/health' },
         { method: 'GET', path: '/api/housing' },
+        { method: 'GET', path: '/api/housing-metadata' },
       ],
       checks,
     },
